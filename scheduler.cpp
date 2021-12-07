@@ -126,8 +126,8 @@ bool testScheduler(Scheduler &sch, std::uint64_t numsamples, std::uint32_t numre
     }
     Timestamp t2 = std::chrono::steady_clock::now();
 
-    std::cout << "Timings schedule:" << std::chrono::duration_cast<std::chrono::nanoseconds>(t1 - t0).count() / numsamples
-              << " check:" << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count() / numsamples << std::endl;
+    std::cout << "Timings schedule:" << std::chrono::duration_cast<std::chrono::nanoseconds>(t1 - t0).count() / (numsamples * numreposts)
+              << " check:" << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count() / (numsamples * numreposts) << std::endl;
     if (notify.error || (notify.counter != numsamples * numreposts))
     {
         return false;
