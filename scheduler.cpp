@@ -79,7 +79,9 @@ bool StandardScheduler::check(Time t)
 
 struct Notifier
 {
-    uint32_t counter = 0;
+    uint64_t counter = 0;
+    Time last = 0;
+    bool error = false;
 };
 
 struct SimpleEvent : public Event
@@ -89,6 +91,11 @@ struct SimpleEvent : public Event
     virtual void fire(Time scheduled, Time now) override
     {
         notify->counter++;
+        if ((now < scheduled) || (now < notify->last))
+        {
+            notify->error = true;
+        }
+        notify->last = now;
     }
 };
 
@@ -121,7 +128,7 @@ bool testScheduler(Scheduler &sch, std::uint64_t numsamples)
     }
     std::uint64_t t2 = ticks();
     std::cout << "Timings schedule:" << (t1 - t0) / numsamples << " check:" << (t2 - t1) / numsamples << std::endl;
-    if (notify.counter != numsamples)
+    if (notify.error || (notify.counter != numsamples))
     {
         return false;
     }
