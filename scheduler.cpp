@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <random>
 #include <iostream>
+#include <chrono>
 
 using Time = std::uint64_t; ///! nanos since epoch
 
@@ -99,36 +100,35 @@ struct SimpleEvent : public Event
     }
 };
 
-static inline std::uint64_t ticks()
-{
-    return __builtin_ia32_rdtsc();
-}
-
-bool testScheduler(Scheduler &sch, std::uint64_t numsamples)
+bool testScheduler(Scheduler &sch, std::uint64_t numsamples, std::uint32_t numreposts)
 {
     Notifier notify;
     std::vector<SimpleEvent> events(numsamples, &notify);
-    std::vector<Time> times(numsamples);
 
     std::random_device rd;
     std::mt19937 g(rd());
     std::uniform_int_distribution<std::uint64_t> dist(0, 10 * numsamples);
-    for (std::uint64_t &tm : times)
-        tm = dist(g);
 
-    std::uint64_t t0 = ticks();
+    using Timestamp = std::chrono::time_point<std::chrono::steady_clock>;
+    Timestamp t0 = std::chrono::steady_clock::now();
     for (std::uint32_t j = 0; j < numsamples; ++j)
     {
-        sch.schedule(&events[j], times[j]);
+        for (std::uint32_t k = 0; k < numreposts; ++k)
+        {
+            Time scheduled = dist(g);
+            sch.schedule(&events[j], scheduled);
+        }
     }
-    std::uint64_t t1 = ticks();
-    for (Time now = 0; now < numsamples * 10; now += 5)
+    Timestamp t1 = std::chrono::steady_clock::now();
+    for (Time now = 0; now <= numsamples * 10; now += 5)
     {
         sch.check(now);
     }
-    std::uint64_t t2 = ticks();
-    std::cout << "Timings schedule:" << (t1 - t0) / numsamples << " check:" << (t2 - t1) / numsamples << std::endl;
-    if (notify.error || (notify.counter != numsamples))
+    Timestamp t2 = std::chrono::steady_clock::now();
+
+    std::cout << "Timings schedule:" << std::chrono::duration_cast<std::chrono::nanoseconds>(t1 - t0).count() / numsamples
+              << " check:" << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count() / numsamples << std::endl;
+    if (notify.error || (notify.counter != numsamples * numreposts))
     {
         return false;
     }
@@ -137,15 +137,16 @@ bool testScheduler(Scheduler &sch, std::uint64_t numsamples)
 
 int main(int argc, char *argv[])
 {
-    if (argc == 1)
+    if (argc < 3)
     {
-        std::cout << "Usage:\n\t" << argv[0] << " <numsamples>" << std::endl;
+        std::cout << "Usage:\n\t" << argv[0] << " <numsamples> <numreposts>" << std::endl;
         return 0;
     }
     std::uint64_t numsamples = ::atoll(argv[1]);
+    std::uint32_t numreposts = ::atoll(argv[2]);
 
     StandardScheduler sch;
-    if (!testScheduler(sch, numsamples))
+    if (!testScheduler(sch, numsamples, numreposts))
     {
         std::cout << "Failed!" << std::endl;
         return 1;
