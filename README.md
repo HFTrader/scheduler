@@ -4,9 +4,9 @@ I am posting the solution to this challenge myself since it was posted in anothe
 
 The solution for this challenge is a very well established algorithm in computer science called "Hierarchical Timed Wheels". The 1987 seminal paper by Varghese and Lauck describes it in detail.
 
-http://www.cs.columbia.edu/~nahum/w6998/papers/sosp87-timing-wheels.pdf
-
 It is mathematically proven there that both the schedule() and check() routines are O(1) in average.
+
+http://www.cs.columbia.edu/~nahum/w6998/papers/sosp87-timing-wheels.pdf
 
 There are several implementations of the algorithm on Github:
 
