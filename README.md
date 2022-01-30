@@ -1,6 +1,6 @@
 # scheduler
 
-I am posting the solution to this challenge myself since it was posted in another answer that "this problem is impossible to solve". Since then I deleted my account for good on StackOverflow.
+I am posting the solution to this challenge myself since it was posted in another answer that "this problem is impossible to solve". That is beyond stupid.
 
 The solution for this challenge is a very well established algorithm in computer science called "Hierarchical Timed Wheels". The 1987 seminal paper by Varghese and Lauck describes it in detail.
 
@@ -19,5 +19,7 @@ https://github.com/libuv/libuv/blob/v1.x/test/benchmark-million-timers.c
 Here is a benchmark for several implementations of variations of this algorithm
 
 https://www.opensourceagenda.com/projects/timer-benchmarks
+
+Since then I deleted my account for good on StackOverflow. The place is toxic and full of dimwits.
 
 Enjoy!
