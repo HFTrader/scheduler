@@ -8,18 +8,10 @@ It is mathematically proven there that both the schedule() and check() routines 
 
 http://www.cs.columbia.edu/~nahum/w6998/papers/sosp87-timing-wheels.pdf
 
-There are several implementations of the algorithm on Github:
-
-https://www.snellman.net/blog/archive/2016-07-27-ratas-hierarchical-timer-wheel/
-
-libuv itself implements it
+There are several implementations of the algorithm.  libuv itself implements it
 
 https://github.com/libuv/libuv/blob/v1.x/test/benchmark-million-timers.c
 
-Here is a benchmark for several implementations of variations of this algorithm
-
-https://www.opensourceagenda.com/projects/timer-benchmarks
-
-Since then I deleted my account for good on StackOverflow. The place is toxic and technically suffering.
+Since then I deleted my account for good on StackOverflow. The place is toxic.
 
 Enjoy!
