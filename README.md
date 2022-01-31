@@ -20,6 +20,6 @@ Here is a benchmark for several implementations of variations of this algorithm
 
 https://www.opensourceagenda.com/projects/timer-benchmarks
 
-Since then I deleted my account for good on StackOverflow. The place is toxic and full of dimwits.
+Since then I deleted my account for good on StackOverflow. The place is toxic and technically suffering.
 
 Enjoy!
